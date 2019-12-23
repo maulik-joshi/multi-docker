@@ -1,0 +1,22 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t max13j/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true max13j/react-test npm test
+
+after_success:
+    - docker build -t max13j/multi-client ./client
+    - docker build -t max13j/multi-nginx ./nginx
+    - docker build -t max13j/multi-server ./server
+    - docker build -t max13j/multi-workder ./worker
+    # Login to docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Take those images an push it to docker hub
+    - docker push max13j/multi-client
+    - docker push max13j/multi-nginx
+    - docker push max13j/multi-server
+    - docker push max13j/multi-worker
