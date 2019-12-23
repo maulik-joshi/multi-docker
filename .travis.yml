@@ -12,7 +12,7 @@ after_success:
     - docker build -t max13j/multi-client ./client
     - docker build -t max13j/multi-nginx ./nginx
     - docker build -t max13j/multi-server ./server
-    - docker build -t max13j/multi-workder ./worker
+    - docker build -t max13j/multi-worker ./worker
     # Login to docker CLI
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     # Take those images an push it to docker hub
